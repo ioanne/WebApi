@@ -117,6 +117,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="EjerciciosJS %28Externo al proyecto%29\ejercicio1.js" />
+    <Content Include="EjerciciosJS %28Externo al proyecto%29\ejercicio2.js" />
+    <Content Include="EjerciciosJS %28Externo al proyecto%29\ejercicio3.js" />
     <Content Include="Global.asax" />
     <Content Include="crear_usuario.html" />
     <Content Include="index.html" />
