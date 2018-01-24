@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Agregar Usuario</title>
+	<meta charset="utf-8" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.0.3.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <script>
+        function EditarUsuario() {  
+         
+            var Usuario = {};  
+            Usuario.Nombre = $("#nombre").val();  
+            Usuario.Apellido = $("#apellido").val();           
+            Usuario.Email = $("#email").val();
+ 
+            $.ajax({  
+                url:"/api/Usuarios/1",   
+                type: "PUT",  
+                contentType: "application/json;charset=utf-8",  
+                data: JSON.stringify(Usuario),
+                dataType: "json",  
+                success: function (response) {  
+  
+                    alert("El usuario se edito con exito!");  
+                        
+                },  
+  
+            error: function (x, e) {  
+                alert('Failed');  
+                alert(x.responseText);  
+                alert(x.status);  
+  
+            }  
+        });  
+     
+        }
+
+     
+        $(document).ready(function ()  
+        {  
+            $("#Editar").click(function (e) {
+                EditarUsuario();
+                e.preventDefault();
+            });  
+  
+        });  
+
+        $(document).ready(function () {
+            $.ajax(
+            {
+                url: '/api/Usuarios/1',
+                type: 'GET',
+                dataType: 'json',
+                success: function (usuario, status, xhr) {
+                    $("#nombre").val(usuario.Nombre);
+                    $("#apellido").val(usuario.Apellido);
+                    $("#email").val(usuario.Email);
+                },
+                error: function (xhr, status, error) {
+                    alert(error);
+                }
+            });
+        });
+    </script>
+
+</head>
+<body>
+
+
+    <div style="margin:25px 50px 25px 50px;">
+        <form class="form-horizontal form-group" id="form" role="form">
+            <div class="form-group">
+                <label for="email">Nombre: </label>
+                <input type="text" class="form-control" id="nombre">
+            </div>
+            <div class="form-group">
+                <label for="email">Apellido: </label>
+                <input type="text" class="form-control" id="apellido">
+            </div>
+            <div class="form-group">
+                <label for="email">Email: </label>
+                <input type="email" class="form-control" id="email">
+            </div>
+
+            <button type="submit" class="btn btn-default" id="Editar">Editar Usuario</button>
+
+
+        </form>
+    </div>
+</body>  
+</html>

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Página de inicio</title>
+	<meta charset="utf-8" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.0.3.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+    <script>
+        function EliminarUsuario() {
+            var selectval = $("#usuarios").val()
+            if (selectval == undefined || selectval == 0) {
+                selectval = 0
+            }
+            else {
+                var Usuario = {};
+                Usuario.Nombre = $("#nombre").val();
+                Usuario.Apellido = $("#apellido").val();
+                Usuario.Email = $("#email").val();
+                $.ajax({
+                    url: "/api/Usuarios/" + selectval,
+                    type: "DELETE",
+                    contentType: "application/json;charset=utf-8",
+                    data: JSON.stringify(Usuario),
+                    dataType: "json",
+                    success: function (response) {
+                        return alert("El usuario se elimino con exito!");
+                    },
+
+                    error: function (x, e) {
+                        alert('Failed');
+                        alert(x.responseText);
+                        alert(x.status);
+                    }
+                });
+            }
+        }
+
+        function EditarUsuario() {
+            var selectval = $("#usuarios").val()
+            if (selectval == undefined || selectval == 0) {
+                selectval = 0
+            }
+            else
+            {
+                var Usuario = {};
+                Usuario.Nombre = $("#nombre").val();
+                Usuario.Apellido = $("#apellido").val();
+                Usuario.Email = $("#email").val();
+
+                $.ajax({
+                    url: "/api/Usuarios/" + selectval,
+                    type: "PUT",
+                    contentType: "application/json;charset=utf-8",
+                    data: JSON.stringify(Usuario),
+                    dataType: "json",
+                    success: function (response) {
+                       return alert("El usuario se edito con exito!");
+                    },
+
+                    error: function (x, e) {
+                        alert('Failed');
+                        alert(x.responseText);
+                        alert(x.status);
+                    }
+                });
+            }
+        }
+
+        function LimpiarCampos() {
+            document.getElementById("form").reset();
+        }
+
+        $(document).ready(function () {
+            $("#Editar").click(function (e) {
+                EditarUsuario();
+                e.preventDefault();
+            });
+        });
+
+            $(document).ready(function () {
+                $("#Eliminar").click(function (e) {
+                    EliminarUsuario();
+                    location.reload(true);
+                    completarSelect();
+                    e.preventDefault();
+                });
+
+            });
+
+        function completarSelect() {
+            var usuarios = $("#usuarios");
+            var cont = 0;
+            $.ajax({
+                type: 'GET',
+                url: 'api/Usuarios',
+                dataType: 'json',
+                success: function (data) {
+                    usuarios.empty();
+                    $.each(data, function (index, val) {
+                        if (cont == 0) {
+                            usuarios.append('<option value="' + 0 + '"> Seleccionar</li>');
+                        }
+                        else {
+                            var Id = Id = val.Id
+                            var Name = val.Nombre;
+                            usuarios.append('<option value="' + Id + '">' + Name + '</li>');
+                        }
+                        cont++;
+                    });
+                }
+            });
+        }
+
+        function obtenerDatosdeId() {
+            var selectval = $("#usuarios").val()
+            if (selectval == undefined || selectval == 0) {
+                selectval = 0
+            }
+            else {
+                $.ajax(
+                {
+                    url: '/api/Usuarios/' + selectval,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (usuario, status, xhr) {
+                        $("#nombre").val(usuario.Nombre);
+                        $("#apellido").val(usuario.Apellido);
+                        $("#email").val(usuario.Email);
+                        $("#id").val(usuario.Id);
+                    },
+                    error: function (xhr, status, error) {
+                        alert(error);
+                    }
+                });
+            }
+        }
+
+        function LimpiarCampos() {
+            document.getElementById("form").reset();
+        }
+
+
+        $(document).ready(function () {
+            completarSelect();
+            $('select').on('change', function () {
+                obtenerDatosdeId();
+            })
+        });
+
+
+
+
+
+    </script>
+</head>
+<body>
+    <h1>Hola! En esta página podras administrar los usuarios en modo de ejemplo!</h1>
+    <div style="margin:25px 50px 25px 50px;">
+
+        <form class="form-horizontal form-group" id="form" role="form">
+            <h4>Editar o eliminar usuarios</h4>
+            <div class="form-group">
+                <label for="email">Seleccionar usuario: </label>
+                <select class="input-large form-control" id="usuarios"></select>
+            </div>
+
+
+        </form>
+    </div>
+    <br />
+
+        <div style="margin:25px 50px 25px 50px;">
+            <form class="form-horizontal form-group" id="form" role="form">
+                <div class="form-group">
+                    <label for="email">Id: </label>
+                    <input type="text" class="form-control" id="id" disabled>
+                </div>
+                <div class="form-group">
+                    <label for="email">Nombre: </label>
+                    <input type="text" class="form-control" id="nombre">
+                </div>
+                <div class="form-group">
+                    <label for="email">Apellido: </label>
+                    <input type="text" class="form-control" id="apellido">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email: </label>
+                    <input type="email" class="form-control" id="email">
+                </div>
+
+                <button type="submit" class="btn btn-default" id="Editar">Guardar</button>
+                <button type="submit" class="btn btn-default" id="Eliminar">Eliminar usuario</button>
+
+            </form>
+            <a href="crear_usuario.html">Crear nuevo usuario</a>
+        </div>
+</body>
+</html>
