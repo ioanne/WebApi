@@ -58,6 +58,8 @@
                     data: JSON.stringify(Usuario),
                     dataType: "json",
                     success: function (response) {
+                        LimpiarCampos();
+                        completarSelect();
                        return alert("El usuario se edito con exito!");
                     },
 
@@ -84,8 +86,6 @@
             $(document).ready(function () {
                 $("#Eliminar").click(function (e) {
                     EliminarUsuario();
-                    location.reload(true);
-                    completarSelect();
                     e.preventDefault();
                 });
 

@@ -117,8 +117,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="ver_usuarios.html" />
-    <Content Include="editar_usuario.html" />
     <Content Include="Global.asax" />
     <Content Include="crear_usuario.html" />
     <Content Include="index.html" />
